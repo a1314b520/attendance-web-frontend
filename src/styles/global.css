@@ -1,0 +1,154 @@
+/* =====================================================
+   全局毛玻璃（模糊玻璃 / Frosted Glass）风格
+   核心：丰富彩色光斑背景 + 半透明磨砂卡片
+   ===================================================== */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.38);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-blur: 18px;
+  --text-main: #2c3e50;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+  color: var(--text-main);
+  position: relative;
+  overflow-x: hidden;
+  /* 深层底色：深蓝紫渐变，让半透明玻璃更有层次 */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 30%, #2b5876 60%, #4e4376 100%);
+  background-attachment: fixed;
+}
+
+/* 两团大光斑：供玻璃卡片透出并被模糊，是磨砂质感的关键 */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.7;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body::before {
+  width: 55vw;
+  height: 55vw;
+  top: -12vw;
+  left: -10vw;
+  background: radial-gradient(circle, rgba(255, 195, 113, 0.85), rgba(255, 87, 127, 0.35) 45%, transparent 70%);
+  animation: blob-drift 18s ease-in-out infinite alternate;
+}
+
+body::after {
+  width: 50vw;
+  height: 50vw;
+  bottom: -10vw;
+  right: -8vw;
+  background: radial-gradient(circle, rgba(64, 224, 208, 0.75), rgba(72, 132, 255, 0.4) 50%, transparent 72%);
+  animation: blob-drift 22s ease-in-out infinite alternate-reverse;
+}
+
+/* 多颗彩色小光斑层：挂载在页面内透明全屏层上 */
+.glass-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glass-scene span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+}
+
+.glass-scene .b1 { width: 34vw; height: 34vw; top: 15%; left: 55%; background: radial-gradient(circle, rgba(255, 183, 77, 0.9), transparent 70%); animation: blob-drift 16s ease-in-out infinite alternate; }
+.glass-scene .b2 { width: 28vw; height: 28vw; top: 60%; left: 8%;  background: radial-gradient(circle, rgba(186, 104, 255, 0.85), transparent 70%); animation: blob-drift 20s ease-in-out infinite alternate-reverse; }
+.glass-scene .b3 { width: 22vw; height: 22vw; top: 25%; left: 30%; background: radial-gradient(circle, rgba(79, 195, 247, 0.85), transparent 70%); animation: blob-drift 24s ease-in-out infinite alternate; }
+.glass-scene .b4 { width: 18vw; height: 18vw; bottom: 12%; right: 22%; background: radial-gradient(circle, rgba(255, 94, 135, 0.75), transparent 70%); animation: blob-drift 19s ease-in-out infinite alternate-reverse; }
+
+@keyframes blob-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(4vw, -3vh) scale(1.15); }
+  100% { transform: translate(-3vw, 4vh) scale(0.95); }
+}
+
+/* 通用磨砂玻璃卡片 */
+.glass-card {
+  position: relative;
+  z-index: 1;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.6);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.6);
+  padding: 24px;
+}
+
+/* 整体页面磨砂容器 */
+.glass-outer {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  width: 100%;
+  backdrop-filter: blur(10px) saturate(1.4);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  background: rgba(255, 255, 255, 0.12);
+  padding: 20px;
+}
+
+/* Element Plus 组件在毛玻璃上的通透化处理 */
+.el-card,
+.el-table,
+.el-tabs__content,
+.el-dialog,
+.el-drawer {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+}
+
+.el-table__inner-wrapper::before,
+.el-table__border-left-patch {
+  display: none;
+}
+
+.el-table th.el-table__cell {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: var(--text-main);
+}
+
+.el-table__body tr.el-table__row td.el-table__cell {
+  background: transparent !important;
+}
+
+.el-table__body tr:hover > td.el-table__cell {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
+
+.el-tabs__nav-wrap::after {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.el-input__wrapper,
+.el-textarea__inner {
+  background: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 0 1px var(--glass-border) inset !important;
+}
