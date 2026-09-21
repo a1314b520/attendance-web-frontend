@@ -94,7 +94,7 @@ const handleRegister = async () => {
   await formRef.value.validate()
   loading.value = true
   try {
-    const { password, confirmPassword, ...payload } = form
+    const { confirmPassword, ...payload } = form
     await register(payload)
     ElMessage.success('注册成功，请登录')
     router.push('/login')
