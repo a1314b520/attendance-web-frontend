@@ -32,6 +32,7 @@
         还没有账号？
         <el-link type="primary" @click="$router.push('/register')">立即注册</el-link>
       </div>
+      <div class="deploy-tag">v2.0 · CI/CD 持续部署验证</div>
     </div>
   </div>
 </template>
@@ -115,5 +116,12 @@ const handleLogin = async () => {
 .auth-footer .el-link {
   color: #ffd86b;
   font-weight: 600;
+}
+.deploy-tag {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 1px;
 }
 </style>
