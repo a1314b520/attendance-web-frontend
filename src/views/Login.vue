@@ -26,6 +26,8 @@
           <el-button type="primary" class="full-btn" :loading="loading" @click="handleLogin">
             登 录
           </el-button>
+          <div style="color:#fff; margin-top:12px; font-size:13px; text-align:center;">持续部署验证 v2.1</div>
+
         </el-form-item>
       </el-form>
       <div class="auth-footer">
